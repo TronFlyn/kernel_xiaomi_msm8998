@@ -2141,12 +2141,12 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
 		goto err_power_down;
 	}
 
-	BUILD_BUG_ON(sizeof(ar->hw->wiphy->fw_version) !=
-			sizeof(ar->normal_mode_fw.fw_file.fw_version));
-	memcpy(ar->hw->wiphy->fw_version,
-	       ar->normal_mode_fw.fw_file.fw_version,
-	       sizeof(ar->hw->wiphy->fw_version));
-	ath10k_debug_print_hwfw_info(ar);
+	ret = ath10k_core_get_board_id_from_otp(ar);
+	if (ret && ret != -EOPNOTSUPP) {
+		ath10k_err(ar, "failed to get board id from otp for qca99x0: %d\n",
+			   ret);
+		goto err_free_firmware_files;
+	}
 
 	if (ar->is_bmi) {
 		ret = ath10k_core_pre_cal_download(ar);
