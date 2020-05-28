@@ -641,13 +641,6 @@ include arch/$(SRCARCH)/Makefile
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS	+=	-O3
 KBUILD_CFLAGS	+=	-mcpu=cortex-a53 -mtune=cortex-a53
-KBUILD_CFLAGS	+=	-mllvm -polly \
-					-mllvm -polly-run-dce \
-					-mllvm -polly-run-inliner \
-					-mllvm -polly-opt-fusion=max \
-					-mllvm -polly-ast-use-context \
-					-mllvm -polly-vectorizer=stripmine \
-					-mllvm -polly-detect-keep-going
 else
 KBUILD_CFLAGS	+= -O2
 endif
